@@ -3,13 +3,16 @@
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
+    "ejs": "^3.0.1",
     "express": "^4.17.1",
     "facebook-chat-api": "^1.7.0",
     "firstline": "^2.0.2",
     "firstline_delete": "^1.0.1",
     "fs": "0.0.1-security",
     "nodemon": "^2.0.2",
+    "path": "^0.12.7",
     "read-last-lines": "^1.7.2",
     "request": "^2.88.2",
     "simsimi": "^3.0.0"
@@ -17,7 +20,7 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
