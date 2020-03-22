@@ -34,40 +34,7 @@
 
 
 
-		$("#APItest").submit(function (event) {
-			// prevent default submit
-			console.log('Send request');
-			$('#waitRequest').html(`
-			<div id='loadProcess'  class="loader">
-			<div class="inner one"></div>
-			<div class="inner two"></div>
-			<div class="inner three"></div>
-			<p style="margin-top: 70px;"> Loading</p>
-			</div>
-			`);
-			event.preventDefault();
-			var messages = $('#messagesParam').val();
-			var language = $('#lanParam').val();
-			$.getJSON(`../api/text=${messages}&lan=${language}`, function (data, textStatus, jqXHR) {
-				$('#loadProcess').remove();
-			})
-				.done(function (data) {
-					console.log(data);
-					$('#myModal').modal('show');
-					$('.modal-body p').html(`
-					<p> Request messages  : ${messages}</p>
-					<p> Request language  : ${language}</p>
-					<p> Response messages : ${data.messages[0].text}</p>
-					`)
-				})
-				.fail(function (jqxhr, settings, ex) {
-					$('#myModal').modal('show');
-					$('.modal-title').html('Request failed');
-					$('.modal-body p').html(`
-					<p> Erro : ${ex}</p>
-					`)
-				});
-		});
+	
 	};
 
 }(jQuery));

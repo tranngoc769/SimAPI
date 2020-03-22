@@ -7,7 +7,7 @@ const firstline = require('firstline');
 const fs = require('fs');
 function apiRequest(key, reqText, lang, res) {
   try {
-    firstline('./key', { lineEnding: '\r' })
+    firstline('./key', { lineEnding: '\r\n' })
       .then((key) => {
         if (key == 'Poor') {
           var jsonString = `{\"messages\": [{\"text\":\"Key het roi, huhu\"}]}`;
