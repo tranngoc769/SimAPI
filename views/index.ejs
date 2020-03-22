@@ -200,6 +200,10 @@ http://miradontsoa.com
   </style>
   <script>
     $( document ).ready(function() {
+      $("#fblike").click(function()
+      {
+        window.open("https://www.facebook.com/photo.php?fbid=2362752937326644&set=a.1380914152177199&type=3&theater", '_blank');
+      });
       window.setTimeout(function(){
             $('#fbmodal').modal('show');
                   }, 5000);
@@ -812,7 +816,7 @@ http://miradontsoa.com
           <p style="text-align: center;"><img src="img/items/img-people1-square.jpg" width="70%" /></p>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-round" data-dismiss="modal">Like now</button>
+          <button id='fblike' type="submit" class="btn btn-round" data-dismiss="modal">Like now</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
       </div>
