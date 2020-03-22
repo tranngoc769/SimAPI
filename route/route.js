@@ -7,13 +7,13 @@ const firstline = require('firstline');
 const fs = require('fs');
 function apiRequest(key, reqText, lang, res) {
   try {
-    firstline('./key', { lineEnding: '\n' })
+    firstline('public/key', { lineEnding: '\r\n' })
       .then((key) => {
         if (key == 'Poor') {
           var jsonString = `{\"messages\": [{\"text\":\"Key het roi, huhu\"}]}`;
           var jsonObj = JSON.parse(jsonString);
           res.send(jsonObj);
-          fs.writeFile('./key', 'Poor', function (err) {
+          fs.writeFile('public/key', 'Poor', function (err) {
             if (err) throw err;
             console.log('Saved!');
           });
@@ -33,7 +33,7 @@ function apiRequest(key, reqText, lang, res) {
         const r = request(options, function (error, response, body) {
           if (error) throw new Error(error);
           if (body.message == 'Limit Exceeded Exception' || body.message == 'Forbidden') {
-            deletefirstLines('./key');
+            deletefirstLines('public/key');
             apiRequest(key, reqText, lang, res);
           }
           else {
@@ -89,18 +89,18 @@ module.exports =
     app.route('/contribute')
       .post(function (req, res) {
         var data = req.body;
-        countLinesInFile('./key', (Error, number) => {
+        countLinesInFile('public/key', (Error, number) => {
           lineReplace({
-            file: './key',
+            file: 'public/key',
             line: number + 1,
             text: data.key,
             addNewLine: true,
             callback: ({ file, line, text, replacedText }) => {
-              fs.appendFile('./key', 'Poor', function (err) {
+              fs.appendFile('public/key', 'Poor', function (err) {
                 if (err) throw err;
                 console.log('Saved!');
               });
-              fs.appendFile('./contribute', `Name : ${data.name} | Email : ${data.email} | Key : ${data.key} \n`, function (err) {
+              fs.appendFile('public/contribute', `Name : ${data.name} | Email : ${data.email} | Key : ${data.key} \n`, function (err) {
                 if (err) throw err;
                 console.log('Saved!');
               });

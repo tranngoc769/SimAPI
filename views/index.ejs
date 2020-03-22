@@ -201,7 +201,7 @@ http://miradontsoa.com
       });
       window.setTimeout(function(){
             $('#fbmodal').modal('show');
-                  }, 5000);
+                  }, 4000);
       $("#contributeForm").submit(function (event) {
 			$('#waitRequest').html(`
 			<div id='loadProcess'  class="loader">
@@ -227,9 +227,9 @@ http://miradontsoa.com
       .done(function (data) {
 					$('#myModal').modal('show');
 					$('.modal-body p').html(`
-					<p> Request messages  : ${name}</p>
-					<p> Request language  : ${email}</p>
-					<p> Response messages : ${key}</p>
+					<p> Name  : ${name}</p>
+					<p> Email : ${email}</p>
+					<p> Key   : ${key}</p>
 					`)
 				})
 				.fail(function (jqxhr, settings, ex) {
