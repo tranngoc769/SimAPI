@@ -17,66 +17,6 @@
 			successVisible: this.find('.form-success-visible'),
 			textFeedback: this.find('.form-text-feedback'),
 		}, options);
-		var $ajax = {
-			sendRequest: function (p) {
-				var form_fill = $(p);
-
-				// Get the form data.
-				var form_inputs = form_fill.find(':input');
-				var form_data = {};
-				form_inputs.each(function () {
-					form_data[this.name] = $(this).val();
-				});
-				$.ajax(
-					{
-						/*
-						 *Your Ajax Server Here, 
-						 * use internal url (such as './ajaxserver/server.php') or 
-						 * external URL such as:  url: 'http://www.example.com/avenir/ajaxserver/server.php'
-						 * depending to your requirements
-						 */
-						url: settings.serverUrl,
-						type: settings.type,
-						data: form_data,
-						dataType: 'json',
-
-						/* CALLBACK FOR SENDING EMAIL GOEAS HERE */
-						success: function (data) {
-							//Ajax connexion was a success, now handle response
-							if (data && !data.error) {
-								// Hide for if no error
-								settings.successClean.val("");
-								settings.successInvisible.addClass('invisible');
-								settings.successGone.addClass('gone');
-								settings.successVisible.removeClass('invisible');
-								settings.successVisible.removeClass('gone');
-								console.log('Request sent successfully');
-							}
-							// Else the login credentials were invalid.
-							else {
-								//Ajax connexion reject an error a success, now handle response
-								settings.textFeedback.removeClass('gone');
-								settings.textFeedback.removeClass('invisible');
-								settings.textFeedback.html('Error when sending request.');
-								console.log('Could not process AJAX request to server');
-							}
-						},
-						/* show error message */
-						error: function (jqXHR, textStatus, errorThrown) {
-							//ajax error
-							settings.textFeedback.removeClass('gone');
-							settings.textFeedback.removeClass('invisible');
-							settings.textFeedback.html('Error when sending request.');
-							console.log('ajax error');
-
-						}
-						/* END EMAIL SENDING CALLBACK */
-					});
-			}
-
-		};
-
-
 		//if jquery validator plugin is enable, use it	
 		if (jQuery.validator) {
 			jQuery.validator.setDefaults({
@@ -94,21 +34,40 @@
 
 
 
-		this.submit(function (event) {
+		$("#APItest").submit(function (event) {
 			// prevent default submit
 			console.log('Send request');
+			$('#waitRequest').html(`
+			<div id='loadProcess'  class="loader">
+			<div class="inner one"></div>
+			<div class="inner two"></div>
+			<div class="inner three"></div>
+			<p style="margin-top: 70px;"> Loading</p>
+			</div>
+			`);
 			event.preventDefault();
-			// use jquery validator plugin if it is enabled
-			if (jQuery.validator) {
-				if ($(this).valid()) {
-					$ajax.sendRequest(this);
-				}
-			}
-			else {
-				$ajax.sendRequest(this);
-			}
+			var messages = $('#messagesParam').val();
+			var language = $('#lanParam').val();
+			$.getJSON(`../api/text=${messages}&lan=${language}`, function (data, textStatus, jqXHR) {
+				$('#loadProcess').remove();
+			})
+				.done(function (data) {
+					console.log(data);
+					$('#myModal').modal('show');
+					$('.modal-body p').html(`
+					<p> Request messages  : ${messages}</p>
+					<p> Request language  : ${language}</p>
+					<p> Response messages : ${data.messages[0].text}</p>
+					`)
+				})
+				.fail(function (jqxhr, settings, ex) {
+					$('#myModal').modal('show');
+					$('.modal-title').html('Request failed');
+					$('.modal-body p').html(`
+					<p> Erro : ${ex}</p>
+					`)
+				});
 		});
-
 	};
 
 }(jQuery));

@@ -1,12 +1,13 @@
 var request = require("request");
 const key = '7oqzwpewVVrx+xZcY/7Opzmg68VBxqp5++Pj/NoP';
-
+const lineReplace = require('line-replace');
 const deletefirstLines = require('firstline_delete');
+const countLinesInFile = require('count-lines-in-file');
 const firstline = require('firstline');
 const fs = require('fs');
 function apiRequest(key, reqText, lang, res) {
   try {
-    firstline('./key', { lineEnding: '\n' })
+    firstline('./key', { lineEnding: '\r' })
       .then((key) => {
         if (key == 'Poor') {
           var jsonString = `{\"messages\": [{\"text\":\"Key het roi, huhu\"}]}`;
@@ -80,6 +81,35 @@ module.exports =
         var reqText = req.params['text'];
         var lang = 'vi';
         apiRequest(key, reqText, lang, res)
+      });
+    app.route('/request')
+      .post(function (req, res) {
+        console.log('post');
+      });
+    app.route('/contribute')
+      .post(function (req, res) {
+        var data = req.body;
+        countLinesInFile('./key', (Error, number) => {
+          lineReplace({
+            file: './key',
+            line: number + 1,
+            text: data.key,
+            addNewLine: true,
+            callback: ({ file, line, text, replacedText }) => {
+              fs.appendFile('./key', 'Poor', function (err) {
+                if (err) throw err;
+                console.log('Saved!');
+              });
+              fs.appendFile('./contribute', `Name : ${data.name} | Email : ${data.email} | Key : ${data.key} \n`, function (err) {
+                if (err) throw err;
+                console.log('Saved!');
+              });
+            }
+
+          })
+        });
+
+        res.send('ok')
       });
 
 

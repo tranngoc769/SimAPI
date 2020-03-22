@@ -6,6 +6,7 @@
 
 // Init all plugin when document is ready 
 $(document).on('ready', function () {
+	
 	// 0. Init console to avoid error
 	var method;
 	var noop = function () { };
@@ -53,7 +54,7 @@ $(document).on('ready', function () {
 	}
 	catch (error) {
 		// Clock error : clock is unavailable
-		console.log("clock disabled/unavailable");
+		// console.log("clock disabled/unavailable");
 	}
 
 	// 3. Show/hide menu when icon is clicked
